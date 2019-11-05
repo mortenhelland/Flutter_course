@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './quiz.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -10,44 +12,62 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var questionIndex = 0;
+  final _questions = const [
+    {
+      'questionText': 'What\'s you favorite color?',
+      'answers': ['Black', 'Red', 'Green', 'White'],
+    },
+    {
+      'questionText': 'What\'s your favorite animal?',
+      'answers': ['Cat', 'Lion', 'Snake', 'Dog'],
+    },
+    {
+      'questionText': 'Who\'s you favorite instructor?',
+      'answers': ['Max', 'Jens', 'Knut', 'Per'],
+    },
+  ];
+  var _questionIndex = 0;
 
-  void answerQuestion() {
+  void _answerQuestion() {
     setState(() {
-      questionIndex = questionIndex + 1;
+      _questionIndex = _questionIndex + 1;
     });
 
-    print(questionIndex);
+    print(_questionIndex);
+    if (_questionIndex < _questions.length) {
+      print('We have more questions!');
+    } else {
+      print('No more question!');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var question = [
-      'What\'s you favorite color?',
-      'What\'s your favorite animal?,'
+    const _questions = [
+      {
+        'questionText': 'What\'s you favorite color?',
+        'answers': ['Black', 'Red', 'Green', 'White'],
+      },
+      {
+        'questionText': 'What\'s your favorite animal?',
+        'answers': ['Cat', 'Lion', 'Snake', 'Dog'],
+      },
+      {
+        'questionText': 'Who\'s you favorite instructor?',
+        'answers': ['Max', 'Jens', 'Knut', 'Per'],
+      },
     ];
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('My First App'),
         ),
-        body: Column(
-          children: [
-            Text(question[questionIndex]),
-            RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 2'),
-              onPressed: answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 3'),
-              onPressed: answerQuestion,
-            ),
-          ],
-        ),
+        body: _questionIndex < _questions.length
+            ? Quiz(_answerQuestion, _questions)
+            : Center(
+                child: Text('You did it!'),
+              ),
       ),
     );
   }
